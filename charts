@@ -1,0 +1,119 @@
+//Piechart.js
+google.charts.load('current', {'packages':['corechart']});
+google.charts.setOnLoadCallback(drawChart);
+
+function drawChart() {
+  var data = google.visualization.arrayToDataTable([
+    ['Data Source', 'Percentage'],
+    ['User Reviews', 45],
+    ['Dermatologist Reports', 25],
+    ['Product Information', 30]
+  ]);
+
+  var options = {
+    title: 'Beauty Data Collection Sources',
+    pieHole: 0.4,
+    colors: ['#f78da7', '#ffb347', '#7ec8e3']
+  };
+
+  var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+  chart.draw(data, options);
+}
+
+//nodechart.js
+var data = {
+    "name": "Beauty App",
+    "children": [
+      { "name": "User Reviews", "size": 400 },
+      { "name": "Skin Reports", "size": 250 },
+      { "name": "Product Info", "size": 350 }
+    ]
+};
+
+var width = 800, height = 400;
+var svg = d3.select("#node-chart").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+var g = svg.append("g").attr("transform", "translate(40,0)");
+
+var tree = d3.tree().size([height, width - 160]);
+var root = d3.hierarchy(data);
+tree(root);
+
+var link = g.selectAll(".link")
+  .data(root.descendants().slice(1))
+  .enter().append("path")
+  .attr("class", "link")
+  .attr("d", function(d) {
+    return "M" + d.y + "," + d.x
+      + "C" + (d.parent.y + 100) + "," + d.x
+      + " " + (d.parent.y + 100) + "," + d.parent.x
+      + " " + d.parent.y + "," + d.parent.x;
+  });
+
+var node = g.selectAll(".node")
+  .data(root.descendants())
+  .enter().append("g")
+  .attr("class", "node")
+  .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; });
+
+node.append("circle").attr("r", 8);
+node.append("text")
+  .attr("dy", 3)
+  .attr("x", function(d) { return d.children ? -13 : 13; })
+  .style("text-anchor", function(d) { return d.children ? "end" : "start"; })
+  .text(function(d) { return d.data.name; });
+
+//stackedbarchart.js 
+google.charts.load('current', {'packages':['bar']});
+google.charts.setOnLoadCallback(drawChart);
+
+function drawChart() {
+  var data = google.visualization.arrayToDataTable([
+    ['Feature', 'Data Preprocessing', 'Model Training', 'Model Testing'],
+    ['Week 1', 8, 5, 2],
+    ['Week 2', 10, 7, 3],
+    ['Week 3', 12, 9, 5]
+  ]);
+
+  var options = {
+    chart: {
+      title: 'AI Model Development Stages',
+      subtitle: 'Data Preprocessing, Training, and Testing'
+    },
+    bars: 'vertical',
+    isStacked: true,
+    colors: ['#f6a5c0', '#ffc107', '#00bfa5']
+  };
+
+  var chart = new google.charts.Bar(document.getElementById('stacked_bar_chart'));
+  chart.draw(data, google.charts.Bar.convertOptions(options));
+}
+
+//linechart.js
+google.charts.load('current', {'packages':['corechart']});
+google.charts.setOnLoadCallback(drawChart);
+
+function drawChart() {
+  var data = google.visualization.arrayToDataTable([
+    ['Time', 'Engagement'],
+    ['Week 1', 100],
+    ['Week 2', 120],
+    ['Week 3', 130],
+    ['Week 4', 150]
+  ]);
+
+  var options = {
+    title: 'User Engagement with Personalized Beauty Content',
+    curveType: 'function',
+    legend: { position: 'bottom' },
+    colors: ['#f78da7']
+  };
+
+  var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+  chart.draw(data, options);
+}
+
+
+
